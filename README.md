@@ -4,13 +4,19 @@ Solution of the N-Body Problem with 12-order Runge-Kutta in C using parallel pro
 
 ## Physics
 
-Given <img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/d6f199b24f3da005ee48bc13ec708833.svg?invert_in_darkmode" align=middle width=12.32879834999999pt height=22.465723500000017pt/> bodies in an inertial reference frame in <img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/fabbfebc4049d77e28eefb36851e7538.svg?invert_in_darkmode" align=middle width=18.424726649999986pt height=26.76175259999998pt/> with an initial position <img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/b619e46d2d29639b61d540e2b863595c.svg?invert_in_darkmode" align=middle width=16.43875364999999pt height=33.333309899999996pt/> and velocity <img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/5ee43daf16e274afb0f4e8bbf6f46fb4.svg?invert_in_darkmode" align=middle width=16.43875364999999pt height=33.333309899999996pt/> for <img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/f428062a63a6f52bb6d47c17786a2dec.svg?invert_in_darkmode" align=middle width=72.71768789999999pt height=22.465723500000017pt/>, the force vector <img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/0595a21ba367886c692bcc642f3b4cc0.svg?invert_in_darkmode" align=middle width=19.625291399999988pt height=42.00914850000001pt/> on body <img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/77a3b857d53fb44e33b53e4c8b68351a.svg?invert_in_darkmode" align=middle width=5.663225699999989pt height=21.68300969999999pt/> caused by its gravitational attraction to body <img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/36b5afebdba34564d884d347484ac0c7.svg?invert_in_darkmode" align=middle width=7.710416999999989pt height=21.68300969999999pt/> is given by the following equation:
-<p align="center"><img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/00954bdbefcb7cb586ed778b89bd0e57.svg?invert_in_darkmode" align=middle width=141.6487479pt height=41.44017899999999pt/></p>
-Where <img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/2a55b86ae85d759fd3e7b6bee1f72286.svg?invert_in_darkmode" align=middle width=19.083998999999988pt height=14.15524440000002pt/> and <img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/c358c43caf3120e2001ffd550efd654f.svg?invert_in_darkmode" align=middle width=20.537609399999987pt height=14.15524440000002pt/> are the masses of the bodies <img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/77a3b857d53fb44e33b53e4c8b68351a.svg?invert_in_darkmode" align=middle width=5.663225699999989pt height=21.68300969999999pt/> and <img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/36b5afebdba34564d884d347484ac0c7.svg?invert_in_darkmode" align=middle width=7.710416999999989pt height=21.68300969999999pt/> respectively; and <img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/1e8bc7065659cd5307576fd9b8681aa4.svg?invert_in_darkmode" align=middle width=92.01112964999999pt height=33.333309899999996pt/> is the distance between the position vectors.
-Summing over all masses yields the <img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/f9c4988898e7f532b9f826a75014ed3c.svg?invert_in_darkmode" align=middle width=14.99998994999999pt height=22.465723500000017pt/> -body equations of motion:
-<p align="center"><img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/9f2a7f8cb9da72a9a1a355cdb72de0e3.svg?invert_in_darkmode" align=middle width=362.8767186pt height=53.742158249999996pt/></p>
-where <img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/6bac6ec50c01592407695ef84f457232.svg?invert_in_darkmode" align=middle width=13.01596064999999pt height=22.465723500000017pt/> is the self-potential energy
-<p align="center"><img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/73d12ae616d98811f51d415e2e38763c.svg?invert_in_darkmode" align=middle width=165.61687725pt height=44.25946635pt/></p>
+Given $\mathrm{N}$ bodies in an inertial reference frame in $\mathbb{R}^{3}$ with an initial position $\overrightarrow{x_{i}}$ and velocity $\overrightarrow{v_{i}}$ for $1 \leq i \leq N$, the force vector $\overrightarrow{f_{i j}}$ on body $i$ caused by its gravitational attraction to body $j$ is given by the following equation:
+$$
+\overrightarrow{f_{i j}}=G \frac{m_{i} m_{j}}{\left|\vec{r}_{i j}\right|^{2}} \cdot \frac{\vec{r}_{i j}}{\left|\vec{r}_{i j}\right|}
+$$
+Where $m_{i}$ and $m_{j}$ are the masses of the bodies $i$ and $j$ respectively; and $\vec{r}_{i j}=\overrightarrow{x_{j}}-\vec{x}_{i}$ is the distance between the position vectors.
+Summing over all masses yields the $N$ -body equations of motion:
+$$
+\vec{F}_{i}=m_{i} \frac{d^{2} \vec{x}_{i}}{d t^{2}}=\sum_{j=1 \atop j \neq i}^{n} \overrightarrow{f_{i j}}=\sum_{j=1 \atop j \neq i}^{n} \frac{G m_{i} m_{j}\left(\vec{r}_{i j}\right)}{\left\|\vec{r}_{i j}\right\|^{3}}=-\frac{\partial U}{\partial \vec{x}_{i}}
+$$
+where $U$ is the self-potential energy
+$$
+U=-\sum_{1 \leq i<j \leq n} \frac{G m_{i} m_{j}}{\left\|\vec{r}_{i j}\right\|}
+$$
 
 
 ## Algorithm
@@ -18,6 +24,6 @@ The computation has two steps:
 1. Compute the forces on each element
 2. Move each element a bit based on this force, and then repeat
 
-Since each object computes the forces on it from each other object (<img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/f9c4988898e7f532b9f826a75014ed3c.svg?invert_in_darkmode" align=middle width=14.99998994999999pt height=22.465723500000017pt/> objects). Thus, the work complexity of this problem is a <img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/4c87ee198ded31321f89b44a38a0ad5a.svg?invert_in_darkmode" align=middle width=21.552516149999988pt height=26.76175259999998pt/> algorithm. Each object must compute its interaction with each other object so each of N objects has to compute <img src="https://rawgit.com/yiqiangjizhang/N-Body-Problem (fetch/main/svgs/8b66c163c506e25add725631048efdcf.svg?invert_in_darkmode" align=middle width=23.219177849999987pt height=22.465723500000017pt/> forces.
+Since each object computes the forces on it from each other object ($N$ objects). Thus, the work complexity of this problem is a $N^2$ algorithm. Each object must compute its interaction with each other object so each of N objects has to compute $N−1$ forces.
 
 <img src="img/N_body_problem_solar_system.jpg" width="750">
