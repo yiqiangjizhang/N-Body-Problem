@@ -1,0 +1,7 @@
+.vscode/
+a.out
+n_body_problem_workspace.code-workspace
+MPI/a.out
+MPI/n_body_problem_workspace.code-workspace
+MPI/output.csv
+.old/
